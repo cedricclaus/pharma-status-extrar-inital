@@ -1,0 +1,16 @@
+version: '2'
+services:
+  pharmastatusextrar-mongodb:
+    image: mongo:4.0.10
+    ports:
+      - '27017:27017'
+    command: mongos --configdb pharmastatusextrar-mongodb-config
+  pharmastatusextrar-mongodb-node:
+    build:
+      context: .
+      dockerfile: mongodb/MongoDB.Dockerfile
+    command: mongod --replSet rs1 --noprealloc --smallfiles
+  pharmastatusextrar-mongodb-config:
+    image: mongo:4.0.10
+    container_name: pharmastatusextrar-mongodb-config
+    command: mongod --noprealloc --smallfiles --configsvr --dbpath /data/db
